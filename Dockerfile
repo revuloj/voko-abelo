@@ -7,7 +7,10 @@ RUN  apt-get update \
   && wget -nv http://www.reta-vortaro.de/alveno/revodb-`date -d "1 day ago" '+%Y%m%d'`.sql.gz \
   && mv *.sql.gz /docker-entrypoint-initdb.d/
 
-COPY *.sql /docker-entrypoint-initdb.d/
+COPY initdb.d/* /docker-entrypoint-initdb.d/
+
+#COPY initdb.d/z0* /docker-entrypoint-initdb.d/
+#COPY initdb.d/z2* /
 
 
 
