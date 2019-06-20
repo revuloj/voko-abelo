@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # debug
-#set -x
+# set -x
 
 mysql=( mysql -u root -p"${MYSQL_ROOT_PASSWORD}" "${MYSQL_DATABASE}" )
 #redaktantoj=${HOME}/etc/redaktantoj
@@ -9,7 +9,7 @@ redaktantoj=/run/secrets/voko.redaktantoj
 tmp=/tmp/redaktantoj.sql
 
 # tolerate bad lines in redaktantoj
-#set +e
+set +e
 
 # legu la liston de redaktantoj el sekreto kaj aldonu al la datumbazo
 if [ -e "${redaktantoj}" ]; then
@@ -43,6 +43,6 @@ fi
 "${mysql[@]}" < "${tmp}"; echo ;
 rm ${tmp}
 
-#set -e
+set -e
 
 
