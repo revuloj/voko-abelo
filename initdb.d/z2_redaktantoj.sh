@@ -3,9 +3,18 @@
 # debug
 # set -x
 
+# workaround for docker stack vs. kubernetes incompatibility
+if [ -e /secrets/ ]; then
+  # kubernetes
+  SECRETS=/secrets
+else
+  # docker stack
+  SECRETS=/run/secrets
+fi
+
 mysql=( mysql -u root -p"${MYSQL_ROOT_PASSWORD}" "${MYSQL_DATABASE}" )
 #redaktantoj=${HOME}/etc/redaktantoj
-redaktantoj=/run/secrets/voko.redaktantoj
+redaktantoj=${SECRETS}/voko.redaktantoj
 tmp=/tmp/redaktantoj.sql
 
 # tolerate bad lines in redaktantoj
