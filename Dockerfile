@@ -1,5 +1,6 @@
-FROM mysql:5.5.62
-MAINTAINER <diestel@steloj.de>
+FROM mysql:5.7.33
+#FROM mariadb:10.0
+LABEL maintainer=<diestel@steloj.de>
 
 RUN  apt-get update \
   && apt-get install -y wget \

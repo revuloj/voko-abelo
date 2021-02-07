@@ -23,7 +23,7 @@ set +e
 # legu la liston de redaktantoj el sekreto kaj aldonu al la datumbazo
 if [ -e "${redaktantoj}" ]; then
 
-    local n=0
+    n=0
 
     while read -r line
     do
