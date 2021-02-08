@@ -14,7 +14,7 @@ set +e
 # legu la liston de redaktantoj el sekreto kaj aldonu al la datumbazo
 if [ -e "${redaktantoj}" ]; then
 
-    local n=0
+    n=0
 
     while read -r line
     do
@@ -38,10 +38,10 @@ if [ -e "${redaktantoj}" ]; then
     done < "${redaktantoj}"
 
     echo -e "commit;\n" >> ${tmp}
-fi
 
-"${mysql[@]}" < "${tmp}"; echo ;
-rm ${tmp}
+    "${mysql[@]}" < "${tmp}"; echo ;
+    rm ${tmp}
+fi
 
 set -e
 
