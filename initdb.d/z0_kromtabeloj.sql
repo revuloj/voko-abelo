@@ -17,9 +17,12 @@ CREATE TABLE `redaktanto` (
 	`red_sessid`	bigint(20)	unsigned DEFAULT 0
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;  
 
--- CREATE TABLE `submeto` (
---   `sub_tempo` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP PRIMARY KEY,
---   `sub_email` VARCHAR(50) CHARACTER SET utf8 NOT NULL DEFAULT '',
---   `sub_type` VARCHAR(20) CHARACTER SET utf8 NOT NULL DEFAULT 'xml',
---   `sub_content` MEDIUMBLOB NOT NULL
--- ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;  
+CREATE TABLE `submeto` (
+  `sub_time` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP PRIMARY KEY,
+  `sub_email` VARCHAR(50) CHARACTER SET utf8 NOT NULL DEFAULT '',
+  `sub_cmd` VARCHAR(20) CHARACTER SET utf8 NOT NULL DEFAULT '', -- 'aldono' por nova dosiero, principe eblus ankau forigo!
+  `sub_desc` VARCHAR(255) CHARACTER SET utf8 NOT NULL DEFAULT '', -- la ŝanĝpriskribo
+  `sub_type` VARCHAR(20) CHARACTER SET utf8 NOT NULL DEFAULT 'xml', -- 'zip/xml' por kunpremita xml
+  `sub_fname` VARCHAR(50) CHARACTER SET utf8 NOT NULL DEFAULT '', -- ĉe 'aldono' la nomo de nova dosiero
+  `sub_content` MEDIUMBLOB NOT NULL
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;  
