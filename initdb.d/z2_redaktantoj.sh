@@ -47,10 +47,10 @@ if [ -e "${redaktantoj}" ]; then
     done < "${redaktantoj}"
 
     echo -e "commit;\n" >> ${tmp}
-fi
 
-"${mysql[@]}" < "${tmp}"; echo ;
-rm ${tmp}
+    "${mysql[@]}" < "${tmp}"; echo ;
+    rm ${tmp}
+fi
 
 set -e
 
