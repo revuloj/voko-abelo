@@ -20,8 +20,9 @@ CREATE TABLE `redaktanto` (
 CREATE TABLE `submeto` (
   `sub_id` INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
   `sub_time` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `sub_state` ENUM('nova','trakt','arkiv','eraro') NOT NULL DEFAULT 'nova', 
+  `sub_state` ENUM('nov','trakt','arkiv','erar','ignor') NOT NULL DEFAULT 'nov', 
                                 -- trakt' = traktata, 'arkiv' = akceptita/arkivita, 'eraro' = rifuzita pro eraro
+                                -- ignor ni uzas por testado
   `sub_email` VARCHAR(50) CHARACTER SET utf8 NOT NULL,
   `sub_cmd` VARCHAR(20) CHARACTER SET utf8 NOT NULL DEFAULT 'redakto', -- 'aldono' por nova dosiero, principe eblus ankau forigo!
   `sub_desc` VARCHAR(255) CHARACTER SET utf8 NOT NULL, -- la ŝanĝpriskribo
