@@ -44,7 +44,7 @@ CREATE TABLE `r3ref` (
 -- NOTO: kiel trakti variaĵojn? cu ekskludi per var='' aŭ
 -- havi linion po variaĵo?
 CREATE OR REPLACE VIEW `v3tezauro` AS
-SELECT r.mrk, r.tip, r.cel, k.kap, k.var, m.num
+SELECT r.mrk, r.tip, r.cel, r.lst, k.kap, k.var, m.num
 FROM (
     SELECT mrk, tip, cel, lst 
     FROM `r3ref`
@@ -52,13 +52,14 @@ FROM (
     SELECT cel AS `mrk`,
       CASE tip WHEN 'prt' THEN 'malprt' WHEN 'malprt' THEN 'prt'
                WHEN 'sub' THEN 'super' WHEN 'super' THEN 'sub'
-               WHEN 'ekz' THEN 'super' WHEN 'dif' THEN 'sin'
-      ELSE tip, 
-    mrk AS `cel` 
+               WHEN 'ekz' THEN 'super' WHEN 'lst' THEN 'ekz'
+               WHEN 'dif' THEN 'sin'
+      ELSE tip END AS `tip`, 
+    mrk AS `cel`, NULL AS `lst`
     FROM `r3ref`
 ) AS r
-LEFT JOIN r3mrk m ON r.mrk = m.mrk
-LEFT JOIN r3kap k ON m.drv = k.mrk;
+INNER JOIN r3mrk m ON r.mrk = m.mrk
+INNER JOIN r3kap k ON m.drv = k.mrk;
 
 -- tradukoj por la serĉo de ne-esperantaj vortoj
 -- trd: la unuopa tradukvorto, se gi enhavas klr@tip=ind aŭ klr@tip=amb, tiu estas parto
