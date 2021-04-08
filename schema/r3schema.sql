@@ -58,7 +58,7 @@ FROM (
     mrk AS `cel`, NULL AS `lst`
     FROM `r3ref`
 ) AS r
-INNER JOIN r3mrk m ON r.mrk = m.mrk
+INNER JOIN r3mrk m ON r.cel = m.mrk
 INNER JOIN r3kap k ON m.drv = k.mrk;
 
 -- tradukoj por la serĉo de ne-esperantaj vortoj
