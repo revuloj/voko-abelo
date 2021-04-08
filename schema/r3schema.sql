@@ -6,8 +6,8 @@ USE `db314802x3159000`;
 CREATE TABLE `r3kap` (
     `kap` VARCHAR(100) NOT NULL,
     `mrk` VARCHAR(100) NOT NULL,
-    `var` VARCHAR(10),
-    `ofc` VARCHAR(10),
+    `var` VARCHAR(10) NOT NULL DEFAULT '',
+    `ofc` VARCHAR(10) NOT NULL DEFAULT '',
     KEY `kap` (`kap`),
     KEY `mrk` (`mrk`),
     KEY `var` (`var`),
@@ -20,7 +20,7 @@ CREATE TABLE `r3kap` (
 CREATE TABLE `r3mrk` (
     `mrk` VARCHAR(100) NOT NULL PRIMARY KEY,
     `ele` VARCHAR(10) NOT NULL,
-    `num` VARCHAR(10),
+    `num` VARCHAR(10) NOT NULL DEFAULT '',
     `drv` VARCHAR(100),
     KEY `mrk` (`mrk`),
     KEY `ele` (`ele`)
@@ -33,7 +33,7 @@ CREATE TABLE `r3ref` (
     `mrk` VARCHAR(100) NOT NULL,
     `tip` ENUM('','vid','ekz','lst','prt','malprt','sub','super','hom','ant','sin') DEFAULT '',
     `cel` VARCHAR(100) NOT NULL,
-    `lst` VARCHAR(100) NOT NULL,
+    `lst` VARCHAR(100),
     KEY `mrk` (`mrk`),
     KEY `cel` (`cel`),
     KEY `tip` (`tip`)
