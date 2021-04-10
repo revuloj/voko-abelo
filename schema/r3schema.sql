@@ -55,14 +55,13 @@ FROM (
     SELECT cel AS `mrk`,
       CASE tip WHEN 'prt' THEN 'malprt' WHEN 'malprt' THEN 'prt'
                WHEN 'sub' THEN 'super' WHEN 'super' THEN 'sub'
-               WHEN 'ekz' THEN 'super' WHEN 'lst' THEN 'ekz'
-               WHEN 'dif' THEN 'sin'
+               WHEN 'ekz' THEN 'super' WHEN 'dif' THEN 'sin'
       ELSE tip END AS `tip`, 
     mrk AS `cel`, NULL AS `lst`
-    FROM `r3ref`
+    FROM `r3ref` WHERE tip <> 'lst'
 ) AS r
 INNER JOIN r3mrk m ON r.cel = m.mrk
-INNER JOIN r3kap k ON m.drv = k.mrk;
+INNER JOIN r3kap k ON m.drv = k.mrk AND k.var = '';
 
 -- tradukoj por la serĉo de ne-esperantaj vortoj
 -- trd: la unuopa tradukvorto, se gi enhavas klr@tip=ind aŭ klr@tip=amb, tiu estas parto
