@@ -31,13 +31,16 @@ CREATE TABLE `r3mrk` (
 -- tip: interne estas cifera kolumno kun '' = 0, 'vid' = 1 ... 'sin' = 10
 CREATE TABLE `r3ref` (
     `mrk` VARCHAR(100) NOT NULL,
-    `tip` ENUM('','vid','ekz','lst','prt','malprt','sub','super','hom','ant','sin') DEFAULT '',
+    `tip` ENUM('','vid','ekz','lst','prt','malprt','sub','super','hom','ant','sin','dif') DEFAULT '',
     `cel` VARCHAR(100) NOT NULL,
     `lst` VARCHAR(100),
     KEY `mrk` (`mrk`),
     KEY `cel` (`cel`),
     KEY `tip` (`tip`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+
+-- mankis 'dif'
+-- ALTER TABLE r3ref MODIFY COLUMN `tip` ENUM('','vid','ekz','lst','prt','malprt','sub','super','hom','ant','sin','dif') DEFAULT ''
 
 -- rigardo por kolekti la referencojn en ambaŭ direktoj kaj
 -- ligi ilin al la celata kapvorto
