@@ -14,6 +14,10 @@ CREATE TABLE `r3kap` (
     KEY `ofc` (`ofc`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 
+-- PLIBONIGU: ebligu serĉi kapvortojn sen distingi inter minusklaj kaj majusklaj vortoj:
+-- alter table r3kap  MODIFY COLUMN kap VARCHAR(100) NOT NULL COLLATE utf8mb4_general_ci
+
+
 -- markoj, t.e. adreseblaj celoj drv, mrk, snc, subsnc, rim (=ele)
 -- num: aŭtomate atribuita numeroj, aparte de snc/subsnc: 1, 2a, 2b...
 -- drv: drv@mrk por konekti al r3kap.mrk
@@ -39,6 +43,29 @@ CREATE TABLE `r3ref` (
     KEY `tip` (`tip`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 
+-- tradukoj por la serĉo de ne-esperantaj vortoj
+-- ind: la indeksita ŝlosilvorto <ind>...</ind> aŭ se tiu ne enestas en 'trd' la tuta teksto (sed sen ofc, klr)
+-- trd: la unuopa tradukvorto, se ĝi enhavas klr, tiu enestas, se enestas mll - nur tiu parto
+-- lng: lingvo-kodo
+-- mrk: referenco kie la traduko troviĝas, se gi estas en ekz aŭ snc sen @mrk, tio estas
+--      la sekva plej proksima @mrk (de snc, drv...), ĝi servu por trovi la kapvortoj per -- 'mrk' -- 'kap'
+-- ekz: se temas pri traduko de ekzemplo, ties parto inter <ind>...</ind>
+CREATE TABLE `r3trd` (
+    `mrk` VARCHAR(100) NOT NULL,
+    `lng` VARCHAR(3) NOT NULL,
+    `ind` VARCHAR(100) NOT NULL,
+    `trd` VARCHAR(255) NOT NULL,
+    `ekz` VARCHAR(255),
+    KEY `mrk` (`mrk`),
+    KEY `lng` (`lng`),
+    KEY `ind` (`ind`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--- PLIBONIGU: uzu unicode_ci utf8_ci por ind - por trovi majusklajn kaj minusklajn per sama serĉo
+-- alter table r3trd CONVERT TO CHARACTER SET utf8mb4 utf8mb4_general_ci
+-- alter table r3trd  MODIFY COLUMN ind VARCHAR(100) NOT NULL COLLATE utf8mb4_general_ci
+-- alter table r3trd  MODIFY COLUMN trd VARCHAR(100) NOT NULL COLLATE utf8mb4_general_ci
+
 -- mankis 'dif'
 -- ALTER TABLE r3ref MODIFY COLUMN `tip` ENUM('','vid','ekz','lst','prt','malprt','sub','super','hom','ant','sin','dif') DEFAULT ''
 
@@ -63,21 +90,3 @@ FROM (
 INNER JOIN r3mrk m ON r.cel = m.mrk
 INNER JOIN r3kap k ON m.drv = k.mrk AND k.var = '';
 
--- tradukoj por la serĉo de ne-esperantaj vortoj
--- trd: la unuopa tradukvorto, se gi enhavas klr@tip=ind aŭ klr@tip=amb, tiu estas parto
--- ind: la indksita ŝlosilvorto <ind>...</ind>
--- lng: lingvo-kodo
--- mrk: referenco kie la traduko troviĝas, se gi estas en ekz aŭ snc sen @mrk, tio estas
---      la sekva plej proksima @mrk (de snc, drv...), gi servu por trovi la kapvortoj per -- 'mrk' -- 'kap'
--- ekz: se temas pri traduko de ekzemplo, ties parto inter <ind>...</ind>
--- CREATE TABLE `r3trd` (
---     `trd` VARCHAR(255) NOT NULL,
---     `ind` VARCHAR(100) NOT NULL,
---     `lng` VARCHAR(3) NOT NULL,
---     `mrk` VARCHAR(100) NOT NULL,
---     `ekz` VARCHAR(255) NOT NULL,
---     KEY `trd` (`trd`),
---     KEY `ind` (`ind`),
---     KEY `lng` (`lng`),
---     KEY `mrk` (`mrk`),
--- ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
