@@ -29,6 +29,7 @@ CREATE TABLE `r3mrk` (
     KEY `mrk` (`mrk`),
     KEY `ele` (`ele`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+-- ĉu ni bezonas ankaŭ? ALTER TABLE r3mrk ADD INDEX(drv);
 
 -- referencoj, i.a. por la tezaŭro, 'mrk' kaj 'cel' estas atributoj @mrk 
 -- tradukeblaj al kapvortoj kaj numeroj per la tabeloj r3mrk kaj r3kap
@@ -53,13 +54,13 @@ CREATE TABLE `r3ref` (
 CREATE TABLE `r3trd` (
     `mrk` VARCHAR(100) NOT NULL,
     `lng` VARCHAR(3) NOT NULL,
-    `ind` VARCHAR(100) NOT NULL,
-    `trd` VARCHAR(255) NOT NULL,
+    `ind` VARCHAR(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+    `trd` VARCHAR(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
     `ekz` VARCHAR(255),
     KEY `mrk` (`mrk`),
     KEY `lng` (`lng`),
     KEY `ind` (`ind`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 
 --- PLIBONIGU: uzu unicode_ci utf8_ci por ind - por trovi majusklajn kaj minusklajn per sama serĉo
 -- alter table r3trd CONVERT TO CHARACTER SET utf8mb4 utf8mb4_general_ci
@@ -73,20 +74,44 @@ CREATE TABLE `r3trd` (
 -- ligi ilin al la celata kapvorto
 -- NOTO: kiel trakti variaĵojn? cu ekskludi per var='' aŭ
 -- havi linion po variaĵo?
-CREATE OR REPLACE VIEW `v3tezauro` AS
-SELECT r.mrk, r.tip, r.cel, r.lst, k.kap, k.var, m.num
-FROM (
-    SELECT mrk, tip, cel, lst 
-    FROM `r3ref`
-  UNION 
-    SELECT cel AS `mrk`,
-      CASE tip WHEN 'prt' THEN 'malprt' WHEN 'malprt' THEN 'prt'
-               WHEN 'sub' THEN 'super' WHEN 'super' THEN 'sub'
-               WHEN 'ekz' THEN 'super' WHEN 'dif' THEN 'sin'
-      ELSE tip END AS `tip`, 
-    mrk AS `cel`, NULL AS `lst`
-    FROM `r3ref` WHERE tip <> 'lst'
-) AS r
-INNER JOIN r3mrk m ON r.cel = m.mrk
-INNER JOIN r3kap k ON m.drv = k.mrk AND k.var = '';
+
+-- PLIBONIGU: Ĝi daŭras ankoraŭ tro longe, sed verŝajne oni povas ankoraŭ plibonigi ĝin
+-- Vd. EXPLAIN select * from v3tezauro where mrk like 'abak.%'; 
+-- https://dev.mysql.com/doc/refman/5.7/en/explain-output.html
+-- https://dev.mysql.com/doc/refman/5.7/en/outer-join-optimization.html
+
+-- Ŝajnas pli rapide do fari la unuopajn du SQL en Perl kaj tie kunigi la rezulton!
+
+-- CREATE OR REPLACE VIEW `v3tezauro` AS
+-- SELECT r.mrk, r.tip, r.cel, r.lst, k.kap, k.var, m.num
+-- FROM (
+--     SELECT mrk, tip, cel, lst 
+--     FROM `r3ref`
+--   UNION 
+--     SELECT cel AS `mrk`,
+--       CASE tip WHEN 'prt' THEN 'malprt' WHEN 'malprt' THEN 'prt'
+--                WHEN 'sub' THEN 'super' WHEN 'super' THEN 'sub'
+--                WHEN 'ekz' THEN 'super' WHEN 'dif' THEN 'sin'
+--       ELSE tip END AS `tip`, 
+--     mrk AS `cel`, NULL AS `lst`
+--     FROM `r3ref` WHERE tip <> 'lst'
+-- ) AS r
+-- INNER JOIN r3mrk m ON r.cel = m.mrk
+-- INNER JOIN r3kap k ON m.drv = k.mrk AND k.var = '';
+
+-- uzebla kiel select * from v3tradukoj where ind like 'abak%'
+-- sed tio daŭras multe pli longe ol rekte serĉante per SELECT...
+
+-- Atentu: tiuj JOIN funkcias nur rapide uzante indeksojn (mrk) se tiuj kolumnoj havas
+-- ekzakte la saman specifon. LEFT JOIN ŝajnas pli rapide ol INNER JOIN - oni ja povas
+-- poste forigi eventualajn troajn liniojn per WHERE kap is NOT NULL aŭ simile!
+
+-- oni povas demandi la aktualan tabel-difinon tiel:
+-- SHOW CREATE TABLE db314802x3159000.r3trd;
+
+CREATE OR REPLACE VIEW `v3traduko` AS
+SELECT t.mrk, t.lng, t.ind, t.trd, k.kap, k.var, m.num 
+FROM `r3trd` t
+LEFT JOIN `r3mrk` m ON t.mrk = m.mrk
+LEFT JOIN `r3kap` k ON m.drv = k.mrk;
 
