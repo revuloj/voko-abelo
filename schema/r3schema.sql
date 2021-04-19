@@ -115,3 +115,15 @@ FROM `r3trd` t
 LEFT JOIN `r3mrk` m ON t.mrk = m.mrk
 LEFT JOIN `r3kap` k ON m.drv = k.mrk;
 
+-- por seeĉi e-e kun tradukoj:
+
+ALTER TABLE r3mrk ADD INDEX (drv);
+
+CREATE OR REPLACE VIEW `v3esperanto` AS
+SELECT k.kap, k.var, m.num, t.mrk, t.lng, t.ind, t.trd 
+FROM r3kap k 
+LEFT JOIN r3mrk m ON k.mrk=m.drv
+LEFT JOIN r3trd t ON t.mrk=m.mrk;
+-- LEFT JOIN r3trd t ON k.mrk LIKE t.mrk || '%'
+
+
