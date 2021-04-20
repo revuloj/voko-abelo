@@ -4,7 +4,7 @@ USE `db314802x3159000`;
 -- mrk: drv@mrk, var: tld@var
 -- ofc: la unua (se escepte estas pluraj) ofc de la kapvorto: *, 1-9, 1953...
 CREATE TABLE `r3kap` (
-    `kap` VARCHAR(100) NOT NULL,
+    `kap` VARCHAR(100) NOT NULL COLLATE=utf8_esperanto_ci,
     `mrk` VARCHAR(100) NOT NULL,
     `var` VARCHAR(10) NOT NULL DEFAULT '',
     `ofc` VARCHAR(10) NOT NULL DEFAULT '',
@@ -115,9 +115,10 @@ FROM `r3trd` t
 LEFT JOIN `r3mrk` m ON t.mrk = m.mrk
 LEFT JOIN `r3kap` k ON m.drv = k.mrk;
 
--- por seeĉi e-e kun tradukoj:
-
-ALTER TABLE r3mrk ADD INDEX (drv);
+-- por serĉi e-e kun tradukoj:
+ALTER TABLE `r3mrk` ADD INDEX (drv);
+--ALTER TABLE `r3kap` MODIFY `kap` VARCHAR(100) CHARACTER SET utf8 COLLATE utf8_general_ci;
+ALTER TABLE `r3kap` MODIFY `kap` VARCHAR(100) CHARACTER SET utf8 COLLATE utf8_esperanto_ci;
 
 CREATE OR REPLACE VIEW `v3esperanto` AS
 SELECT k.kap, k.var, m.num, t.mrk, t.lng, t.ind, t.trd 
