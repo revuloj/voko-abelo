@@ -33,3 +33,34 @@ CREATE TABLE `submeto` (
   INDEX inx_sub_state(`sub_state`),
   INDEX inx_sub_email(`sub_email`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;  
+
+
+
+CREATE TABLE `r3trd` (
+    `mrk` VARCHAR(100) NOT NULL,
+    `lng` VARCHAR(3) NOT NULL,
+    `ind` VARCHAR(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+    `trd` VARCHAR(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+    `ekz` VARCHAR(255),
+    KEY `mrk` (`mrk`),
+    KEY `lng` (`lng`),
+    KEY `ind` (`ind`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+
+
+CREATE OR REPLACE VIEW `v3traduko` AS
+SELECT t.mrk, t.lng, t.ind, t.trd, k.kap, k.var, m.num 
+FROM `r3trd` t
+LEFT JOIN `r3mrk` m ON t.mrk = m.mrk
+LEFT JOIN `r3kap` k ON m.drv = k.mrk;
+
+-- por seeĉi e-e kun tradukoj:
+
+ALTER TABLE r3mrk ADD INDEX (drv);
+
+CREATE OR REPLACE VIEW `v3esperanto` AS
+SELECT k.kap, k.var, m.num, t.mrk, t.lng, t.ind, t.trd 
+FROM r3kap k 
+LEFT JOIN r3mrk m ON k.mrk=m.drv
+LEFT JOIN r3trd t ON t.mrk=m.mrk;
+-- LEFT JOIN r3trd t ON k.mrk LIKE t.mrk || '%'
