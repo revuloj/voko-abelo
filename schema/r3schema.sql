@@ -110,7 +110,7 @@ CREATE TABLE `r3trd` (
 -- SHOW CREATE TABLE db314802x3159000.r3trd;
 
 CREATE OR REPLACE VIEW `v3traduko` AS
-SELECT t.mrk, t.lng, t.ind, t.trd, k.kap, k.var, m.num 
+SELECT t.mrk, t.lng, t.ind, t.trd, t.ekz, k.kap, k.var, m.num 
 FROM `r3trd` t
 LEFT JOIN `r3mrk` m ON t.mrk = m.mrk
 LEFT JOIN `r3kap` k ON m.drv = k.mrk;
