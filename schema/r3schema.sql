@@ -56,10 +56,11 @@ CREATE TABLE `r3trd` (
     `lng` VARCHAR(3) NOT NULL,
     `ind` VARCHAR(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
     `trd` VARCHAR(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
-    `ekz` VARCHAR(255),
+    `ekz` VARCHAR(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
     KEY `mrk` (`mrk`),
     KEY `lng` (`lng`),
-    KEY `ind` (`ind`)
+    KEY `ind` (`ind`),
+    KEY `ekz` (`ekz`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 
 --- PLIBONIGU: uzu unicode_ci utf8_ci por ind - por trovi majusklajn kaj minusklajn per sama serĉo
