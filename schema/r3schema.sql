@@ -1,5 +1,29 @@
 USE `db314802x3159000`;
 
+-- La tabeloj pleniĝas el JSON-dosieroj en revo/tez/, kiujn ni ekstraktas el
+-- la XML-fontoj de la artikoloj, enhavantaj kap, mrk, ref, trd.
+-- 
+-- La tezaŭro kaj serĉo poste uzas tiujn tabeloj resp. la rigardojn v3*
+-- 
+-- Pri la signaroj:
+-- 
+-- Por e-aj kolumnoj ni uzas CHARSET=utf8, sed por nacilingvaj kolumnoj utf8mb4. La kaŭzo estas, ke utf8 estas kripligita 
+-- permesantaj nur unikodajn signojn ĝis 3-bitokajn. Tamen ĝi havas la avantaĝon, ke ekz-e por indeksoj ĝi rezervas  
+-- nur 3 anst. 4 bitokoj, kaj en la servilo retavortaro.de la indekso estas limigita al maks. mil bitokoj, kiu ne sufiĉus 
+-- por r3trd.
+-- 
+-- Por la kolumnoj mrk principe ni ne bezonus uft8, ĉar ili devus esti askiaj, tamen foje enŝteliĝas e-a litero, do ni  
+-- elektis pli sekure ankaŭ utf8. Por serĉkampoj kap, ind, ekz, kie ni ne volas distingi inter majuskloj kaj minuskloj ni  
+-- elektis ordigilojn _ci (case insensitive), cetere la elekto _general_ ankaŭ ne distingas supersignitajn literojn, kio  
+-- helpas serĉadon en lingvoj kiel la franca ks. Por kap ni elekits utf8_esperanto_ci, kiu ebligas ordigi laŭ reguloj de  
+-- Esperanto, kion ni en la serĉo tamen ne uzas, ĉar post regrupigo ni ĉiuokaze devos reordigi en la retumiloj per 
+-- Javoskripto.
+--
+-- La indeksoj kaj rigardoj v3* estas tiel aranĝitaj, ke la serĉoj, kiujn ni efektive faras en la tezaŭro kaj serĉilo  
+-- funkciu plej eble rapidaj. MySQL alie ol ekz-e Oracle estas relative sentema pri tio, t.e. malgranda ŝanĝeto jam faras 
+-- diferencon inter 0,005 kaj 0,5s aŭ eĉ 5s do la cent- aŭ miloblon.
+
+
 -- kapvortoj kun referenco al drv@mrk:
 -- mrk: drv@mrk, var: tld@var
 -- ofc: la unua (se escepte estas pluraj) ofc de la kapvorto: *, 1-9, 1953...
