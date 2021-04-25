@@ -4,7 +4,7 @@ USE `db314802x3159000`;
 -- mrk: drv@mrk, var: tld@var
 -- ofc: la unua (se escepte estas pluraj) ofc de la kapvorto: *, 1-9, 1953...
 CREATE TABLE `r3kap` (
-    `kap` VARCHAR(100) NOT NULL COLLATE=utf8_esperanto_ci,
+    `kap` VARCHAR(100) NOT NULL COLLATE utf8_esperanto_ci,
     `mrk` VARCHAR(100) NOT NULL,
     `var` VARCHAR(10) NOT NULL DEFAULT '',
     `ofc` VARCHAR(10) NOT NULL DEFAULT '',
@@ -56,7 +56,7 @@ CREATE TABLE `r3trd` (
     `lng` VARCHAR(3) NOT NULL,
     `ind` VARCHAR(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
     `trd` VARCHAR(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
-    `ekz` VARCHAR(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+    `ekz` VARCHAR(255) COLLATE utf8_esperanto_ci NOT NULL,
     KEY `mrk` (`mrk`),
     KEY `lng` (`lng`),
     KEY `ind` (`ind`),
