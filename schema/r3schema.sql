@@ -146,7 +146,7 @@ ALTER TABLE `r3mrk` ADD INDEX (drv);
 ALTER TABLE `r3kap` MODIFY `kap` VARCHAR(100) CHARACTER SET utf8 COLLATE utf8_esperanto_ci;
 
 CREATE OR REPLACE VIEW `v3esperanto` AS
-SELECT k.kap, k.var, m.num, t.mrk, t.lng, t.ind, t.trd 
+SELECT k.kap, k.var, m.num, m.mrk, t.lng, t.ind, t.trd, t.ekz 
 FROM r3kap k 
 LEFT JOIN r3mrk m ON k.mrk=m.drv
 LEFT JOIN r3trd t ON t.mrk=m.mrk;
