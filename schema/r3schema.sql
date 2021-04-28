@@ -142,7 +142,7 @@ LEFT JOIN `r3kap` k ON m.drv = k.mrk;
 
 -- por serĉi e-e kun tradukoj:
 ALTER TABLE `r3mrk` ADD INDEX (drv);
---ALTER TABLE `r3kap` MODIFY `kap` VARCHAR(100) CHARACTER SET utf8 COLLATE utf8_general_ci;
+-- ALTER TABLE `r3kap` MODIFY `kap` VARCHAR(100) CHARACTER SET utf8 COLLATE utf8_general_ci;
 ALTER TABLE `r3kap` MODIFY `kap` VARCHAR(100) CHARACTER SET utf8 COLLATE utf8_esperanto_ci;
 
 CREATE OR REPLACE VIEW `v3esperanto` AS
