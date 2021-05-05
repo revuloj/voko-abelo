@@ -1,5 +1,8 @@
 -- Ankoraŭ nekomplete dokumentita skemo de la mysql-datumbazo...
 
+-- CREATE DATABASE /*!32312 IF NOT EXISTS*/ `db314802x3159000` /*!40100 DEFAULT CHARACTER SET utf8mb4 COLLATE utf8_bin */;
+
+
 -- oni povas demandi la aktualan tabel-difinon tiel:
 -- SHOW CREATE TABLE db314802x3159000.r2_vikicelo;
 
@@ -36,6 +39,13 @@ CREATE TABLE `submeto` (
   INDEX inx_sub_email(`sub_email`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;  
 
+
+CREATE TABLE `lng` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `lng_kodo` varchar(3) COLLATE utf8_bin NOT NULL DEFAULT '',
+  `lng_nomo` varchar(20) COLLATE utf8_bin NOT NULL DEFAULT '',
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM AUTO_INCREMENT=149 DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 
 -- Referencoj al Vikipedio:
 -- vik_celref estas la marko de Revo-drivaĵo kaj vik_artikolo la paĝo (artikolo) en Vikipedio

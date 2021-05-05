@@ -23,6 +23,9 @@ USE `db314802x3159000`;
 -- funkciu plej eble rapidaj. MySQL alie ol ekz-e Oracle estas relative sentema pri tio, t.e. malgranda ŝanĝeto jam faras 
 -- diferencon inter 0,005 kaj 0,5s aŭ eĉ 5s do la cent- aŭ miloblon.
 
+-- oni povas demandi la aktualan tabel-difinon tiel:
+-- SHOW CREATE TABLE db314802x3159000.r3trd;
+
 
 -- kapvortoj kun referenco al drv@mrk:
 -- mrk: drv@mrk, var: tld@var
@@ -51,7 +54,8 @@ CREATE TABLE `r3mrk` (
     `num` VARCHAR(10) NOT NULL DEFAULT '',
     `drv` VARCHAR(100),
     KEY `mrk` (`mrk`),
-    KEY `ele` (`ele`)
+    KEY `ele` (`ele`),
+    KEY `drv` (`drv`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 -- ĉu ni bezonas ankaŭ? ALTER TABLE r3mrk ADD INDEX(drv);
 
@@ -87,43 +91,6 @@ CREATE TABLE `r3trd` (
     KEY `ekz` (`ekz`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 
---- PLIBONIGU: uzu unicode_ci utf8_ci por ind - por trovi majusklajn kaj minusklajn per sama serĉo
--- alter table r3trd CONVERT TO CHARACTER SET utf8mb4 utf8mb4_general_ci
--- alter table r3trd  MODIFY COLUMN ind VARCHAR(100) NOT NULL COLLATE utf8mb4_general_ci
--- alter table r3trd  MODIFY COLUMN trd VARCHAR(100) NOT NULL COLLATE utf8mb4_general_ci
-
--- mankis 'dif'
--- ALTER TABLE r3ref MODIFY COLUMN `tip` ENUM('','vid','ekz','lst','prt','malprt','sub','super','hom','ant','sin','dif') DEFAULT ''
-
--- rigardo por kolekti la referencojn en ambaŭ direktoj kaj
--- ligi ilin al la celata kapvorto
--- NOTO: kiel trakti variaĵojn? cu ekskludi per var='' aŭ
--- havi linion po variaĵo?
-
--- PLIBONIGU: Ĝi daŭras ankoraŭ tro longe, sed verŝajne oni povas ankoraŭ plibonigi ĝin
--- Vd. EXPLAIN select * from v3tezauro where mrk like 'abak.%'; 
--- https://dev.mysql.com/doc/refman/5.7/en/explain-output.html
--- https://dev.mysql.com/doc/refman/5.7/en/outer-join-optimization.html
-
--- Ŝajnas pli rapide do fari la unuopajn du SQL en Perl kaj tie kunigi la rezulton!
-
--- CREATE OR REPLACE VIEW `v3tezauro` AS
--- SELECT r.mrk, r.tip, r.cel, r.lst, k.kap, k.var, m.num
--- FROM (
---     SELECT mrk, tip, cel, lst 
---     FROM `r3ref`
---   UNION 
---     SELECT cel AS `mrk`,
---       CASE tip WHEN 'prt' THEN 'malprt' WHEN 'malprt' THEN 'prt'
---                WHEN 'sub' THEN 'super' WHEN 'super' THEN 'sub'
---                WHEN 'ekz' THEN 'super' WHEN 'dif' THEN 'sin'
---       ELSE tip END AS `tip`, 
---     mrk AS `cel`, NULL AS `lst`
---     FROM `r3ref` WHERE tip <> 'lst'
--- ) AS r
--- INNER JOIN r3mrk m ON r.cel = m.mrk
--- INNER JOIN r3kap k ON m.drv = k.mrk AND k.var = '';
-
 -- uzebla kiel select * from v3tradukoj where ind like 'abak%'
 -- sed tio daŭras multe pli longe ol rekte serĉante per SELECT...
 
@@ -131,8 +98,6 @@ CREATE TABLE `r3trd` (
 -- ekzakte la saman specifon. LEFT JOIN ŝajnas pli rapide ol INNER JOIN - oni ja povas
 -- poste forigi eventualajn troajn liniojn per WHERE kap is NOT NULL aŭ simile!
 
--- oni povas demandi la aktualan tabel-difinon tiel:
--- SHOW CREATE TABLE db314802x3159000.r3trd;
 
 CREATE OR REPLACE VIEW `v3traduko` AS
 SELECT t.mrk, t.lng, t.ind, t.trd, t.ekz, k.kap, k.var, m.num 
@@ -141,15 +106,13 @@ LEFT JOIN `r3mrk` m ON t.mrk = m.mrk
 LEFT JOIN `r3kap` k ON m.drv = k.mrk;
 
 -- por serĉi e-e kun tradukoj:
-ALTER TABLE `r3mrk` ADD INDEX (drv);
--- ALTER TABLE `r3kap` MODIFY `kap` VARCHAR(100) CHARACTER SET utf8 COLLATE utf8_general_ci;
-ALTER TABLE `r3kap` MODIFY `kap` VARCHAR(100) CHARACTER SET utf8 COLLATE utf8_esperanto_ci;
+-- ALTER TABLE `r3mrk` ADD INDEX (drv);
+-- ALTER TABLE `r3kap` MODIFY `kap` VARCHAR(100) CHARACTER SET utf8 COLLATE utf8_esperanto_ci;
 
 CREATE OR REPLACE VIEW `v3esperanto` AS
 SELECT k.kap, k.var, m.num, m.mrk, t.lng, t.ind, t.trd, t.ekz 
 FROM r3kap k 
 LEFT JOIN r3mrk m ON k.mrk=m.drv
 LEFT JOIN r3trd t ON t.mrk=m.mrk;
--- LEFT JOIN r3trd t ON k.mrk LIKE t.mrk || '%'
 
 
