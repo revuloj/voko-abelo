@@ -42,7 +42,7 @@ CREATE TABLE `submeto` (
 
 CREATE TABLE `lng` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `lng_kodo` varchar(3) COLLATE utf8_bin NOT NULL DEFAULT '',
+  `lng_kodo` varchar(4) COLLATE utf8_bin NOT NULL DEFAULT '',
   `lng_nomo` varchar(20) COLLATE utf8_bin NOT NULL DEFAULT '',
   PRIMARY KEY (`id`)
 ) ENGINE=MyISAM AUTO_INCREMENT=149 DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
@@ -57,5 +57,5 @@ CREATE TABLE `r2_vikicelo` (
   `vik_revo` varchar(40) COLLATE utf8_bin DEFAULT NULL
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 
-
+-- ALTER TABLE lng MODIFY lng_kodo VARCHAR(4);
 
