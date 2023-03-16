@@ -91,6 +91,22 @@ CREATE TABLE `r3trd` (
     KEY `ekz` (`ekz`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 
+
+-- Referencoj al FdE kaj OA:
+-- inx: indeksita vorto, radiko k.s.
+-- fnt: 'fe' aŭ 'oa'
+-- dos: dosiero / sekcio-id, ekz. gra_en, univort, oa_1... (sen finaĵo .html)
+-- ref: referencparto post #
+-- skc: montrebla nomo de la referenco, kez. UV, OA3 II
+CREATE TABLE `r3ofc` (
+  `inx` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+  `fnt` varchar(10) NOT NULL,
+  `dos` varchar(100) NOT NULL,
+  `ref` varchar(255) NOT NULL,
+  `skc` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+   KEY `inx` (`inx`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+
 -- uzebla kiel select * from v3tradukoj where ind like 'abak%'
 -- sed tio daŭras multe pli longe ol rekte serĉante per SELECT...
 

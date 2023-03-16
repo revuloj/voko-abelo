@@ -48,7 +48,7 @@ CREATE TABLE `lng` (
 ) ENGINE=MyISAM AUTO_INCREMENT=149 DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 
 -- Referencoj al Vikipedio:
--- vik_celref estas la marko de Revo-drivaĵo kaj vik_artikolo la paĝo (artikolo) en Vikipedio
+-- vik_celref estas la marko de Revo-derivaĵo kaj vik_artikolo la paĝo (artikolo) en Vikipedio
 -- per vik_revo oni povas dokumenti kapvorton kun alia literumo ol la Vikipedia vorto, sed
 -- momente ni ne uzas tiun informon
 CREATE TABLE `r2_vikicelo` (
