@@ -94,12 +94,14 @@ CREATE TABLE `r3trd` (
 
 -- Referencoj al FdE kaj OA:
 -- inx: indeksita vorto, radiko k.s.
+-- mrk: marko de Revo-artikolo/-derivaĵo en kiu aperu la referenco (ni limiĝas al unu)
 -- fnt: 'fe' aŭ 'oa'
 -- dos: dosiero / sekcio-id, ekz. gra_en, univort, oa_1... (sen finaĵo .html)
 -- ref: referencparto post #
 -- skc: montrebla nomo de la referenco, kez. UV, OA3 II
 CREATE TABLE `r3ofc` (
   `inx` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+  `mrk` varchar(100),
   `fnt` varchar(10) NOT NULL,
   `dos` varchar(100) NOT NULL,
   `ref` varchar(255) NOT NULL,
