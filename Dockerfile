@@ -1,4 +1,4 @@
-FROM mysql:5.7.33
+FROM mysql:5.7.42
 #FROM mariadb:10.0
 LABEL maintainer=<diestel@steloj.de>
 
