@@ -106,7 +106,8 @@ CREATE TABLE `r3ofc` (
   `dos` varchar(100) NOT NULL,
   `ref` varchar(255) NOT NULL,
   `skc` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
-   KEY `inx` (`inx`)
+   KEY `inx` (`inx`),
+   KEY `mrk` (`mrk`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 
 -- uzebla kiel select * from v3tradukoj where ind like 'abak%'
