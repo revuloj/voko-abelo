@@ -2,7 +2,7 @@
 
 # kreas/eldonas la procezujon kun la mysql-datumbazo por la retpaĝo de Revo:
 
-eldono=2i
+eldono=2k
 
 # ni komprenas preparo | kreo | docker | servilo | etikedo
 # kaj supozas "docker", se nenio donita argumente
