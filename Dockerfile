@@ -8,6 +8,8 @@ LABEL maintainer=<diestel@steloj.de>
 #   && wget -nv http://www.reta-vortaro.de/alveno/revodb-`date -d "1 day ago" '+%Y%m%d'`.sql.gz \
 #   && mv *.sql.gz /docker-entrypoint-initdb.d/
 
+COPY /etc/* /etc/mysql/
+
 COPY schema/* /docker-entrypoint-initdb.d/
 COPY initdb.d/* /docker-entrypoint-initdb.d/
 

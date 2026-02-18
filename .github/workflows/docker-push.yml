@@ -62,7 +62,7 @@ jobs:
   # Push image to GitHub Package Registry.
   # See also https://docs.docker.com/docker-hub/builds/
   sendo:
-    # Ensure test job passes before pushing image.
+    # Certigu ke testo estis sukcesa antaŭ puŝi la procezujon
     needs: testo
 
     runs-on: ubuntu-latest
