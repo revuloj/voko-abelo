@@ -9,9 +9,10 @@
 USE `db314802x3159000`;
 
 CREATE TABLE `email` (
-  `ema_red_id` int unsigned NOT NULL AUTO_INCREMENT PRIMARY KEY,
+  `ema_red_id` int unsigned NOT NULL,
   `ema_email` varchar(50) CHARACTER SET utf8 NOT NULL DEFAULT '',
   `ema_sort` int(11) unsigned NOT NULL DEFAULT 0,
+  PRIMARY KEY(`ema_red_id`,`ema_sort`),
   UNIQUE KEY `ema_email` (`ema_email`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 

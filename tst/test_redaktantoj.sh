@@ -3,22 +3,7 @@
 # debug
 # set -x
 
-# workaround for docker stack vs. kubernetes incompatibility
-if [ -e /secrets/ ]; then
-  # kubernetes
-  SECRETS=/secrets
-else
-  # docker stack
-  SECRETS=/run/secrets
-fi
-
-mysql=( mysql -u root -p"${MYSQL_ROOT_PASSWORD}" "${MYSQL_DATABASE}" )
-#redaktantoj=${HOME}/etc/redaktantoj
-
-# redaktantolisto troviĝas en sekreta dosiero
-redaktantoj=${SECRETS}/voko.redaktantoj
-# ni skribas db-enig-komandoj tien:
-tmp=/tmp/redaktantoj.sql
+redaktantoj=${HOME}/etc/redaktantoj
 
 # toleru malbonajn liniojn en redaktantoj
 set +e
@@ -39,7 +24,7 @@ if [ -e "${redaktantoj}" ]; then
         nom_1=${ar[0]## } # forigu spacon komence
         nom_2=${nom_1%% } # forigu spacon fine
         nom=${nom_2//\'/\'\'} # apostrofon anstatataŭigu per du
-        echo -e "insert into redaktanto(red_id,red_nomo) values (${n},'${nom}');\n" >> ${tmp}
+        echo -e "insert into redaktanto(red_id,red_nomo) values (${n},'${nom}');\n"
 
         # registru la retadreso(j)n
         r=0
@@ -47,16 +32,13 @@ if [ -e "${redaktantoj}" ]; then
         do
             rpx=${rp%">"*} # forigu '>' kaj io ajn post ĝi
             let "r++"
-            echo -e "insert into email(ema_red_id,ema_email,ema_sort) values (${n},'${rpx}',${r}) on duplicate key update ema_email=ema_email;\n" >> ${tmp}
+            echo -e "insert into email(ema_red_id,ema_email,ema_sort) values (${n},'${rpx}',${r}) on duplicate key update ema_email=ema_email;\n"
         done
 
     done < "${redaktantoj}"
 
-    echo -e "commit;\n" >> ${tmp}
+    echo -e "commit;\n"
 
-    # importu ĉion en la datumbazon
-    "${mysql[@]}" < "${tmp}"; echo ;
-    rm ${tmp}
 fi
 
 set -e
