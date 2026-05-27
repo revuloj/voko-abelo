@@ -1,0 +1,105 @@
+@startuml
+' --- Agordoj por pli bona aspekto ---
+skinparam changelog hide
+skinparam linetype ortho
+skinparam shadowing false
+skinparam class {
+    BackgroundColor White
+    ArrowColor #333333
+    BorderColor #555555
+}
+
+title ER-Modelo r3 por la ReVo-serĉo kaj tezaŭro
+
+' --- 1. Bazaj Fontotabeloj (Fizikaj Tabeloj) ---
+
+entity "r3kap (Kapvortoj kun referenco al drv@mrk)" as r3kap {
+    * **kap** : VARCHAR(100)
+    * **mrk** : VARCHAR(100)
+    --
+    * var : VARCHAR(10)
+    * ofc : VARCHAR(10)
+}
+
+entity "r3mrk (Markoj de drv, mrk, snc, subsnc, rim)" as r3mrk {
+    * **mrk** : VARCHAR(100) <<PK>>
+    --
+    * ele : VARCHAR(10)
+    * num : VARCHAR(10)
+    drv : VARCHAR(100)
+}
+
+entity "r3ref (Referencoj por la tezaŭro)" as r3ref {
+    * **mrk** : VARCHAR(100)
+    * **cel** : VARCHAR(100)
+    --
+    tip : ENUM('', 'vid', 'ekz'...)
+    lst : VARCHAR(100)
+}
+
+entity "r3trd (Tradukoj por la serĉo)" as r3trd {
+    * **mrk** : VARCHAR(100)
+    * **lng** : VARCHAR(3)
+    * **ind** : VARCHAR(100)
+    * **trd** : VARCHAR(255)
+    --
+    * ekz : VARCHAR(255)
+}
+
+entity "r3ofc (Referencoj al FdE kaj OA)" as r3ofc {
+    * **inx** : VARCHAR(100)
+    * **fnt** : VARCHAR(10)
+    * **dos** : VARCHAR(100)
+    * **ref** : VARCHAR(255)
+    * **skc** : VARCHAR(100)
+    --
+    mrk : VARCHAR(100)
+}
+
+' --- 2. Rigardoj ---
+
+entity "v3traduko (Rigardo)" as v3traduko << (V, #A9DCDF) >> {
+    + t.mrk : VARCHAR(100)
+    + t.lng : VARCHAR(3)
+    + t.ind : VARCHAR(100)
+    + t.trd : VARCHAR(255)
+    + t.ekz : VARCHAR(255)
+    + k.kap : VARCHAR(100)
+    + k.var : VARCHAR(10)
+    + m.num : VARCHAR(10)
+}
+
+entity "v3esperanto (Rigardo)" as v3esperanto << (V, #A9DCDF) >> {
+    + k.kap : VARCHAR(100)
+    + k.var : VARCHAR(10)
+    + m.num : VARCHAR(10)
+    + m.mrk : VARCHAR(100)
+    + t.lng : VARCHAR(3)
+    + t.ind : VARCHAR(100)
+    + t.trd : VARCHAR(255)
+    + t.ekz : VARCHAR(255)
+}
+
+
+' --- Rilatoj inter Fizikaj Tabeloj ---
+
+r3kap "1" -right-o{ "0..*" r3mrk : "drv = mrk"
+r3mrk "1" --o{ "0..*" r3ref : "mrk"
+r3mrk "1" --o{ "0..*" r3ref : "cel"
+r3mrk "1" --o{ "0..*" r3trd : "mrk"
+r3mrk "1" <--o{ "0..*" r3ofc : "mrk"
+
+
+' --- Rilatoj (Dependecoj) de la Rigardoj al la Fontotabeloj ---
+
+' Dependecoj por v3traduko
+r3trd "t" ..> v3traduko : "bazo (t.mrk)"
+r3mrk "m" ..> v3traduko : "LEFT JOIN\n(t.mrk = m.mrk)"
+r3kap "k" ..> v3traduko : "LEFT JOIN\n(m.drv = k.mrk)"
+
+' Dependecoj por v3esperanto
+r3kap "k" ..> v3esperanto : "bazo (k.mrk)"
+r3mrk "m" ..> v3esperanto : "LEFT JOIN\n(k.mrk = m.drv)"
+r3trd "t" ..> v3esperanto : "LEFT JOIN\n(t.mrk = m.mrk)"
+
+@enduml

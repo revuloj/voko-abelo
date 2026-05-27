@@ -4,7 +4,13 @@ Procesumo de la datumbazo (mySQL) de Reta Vortaro.
 
 Pri la nomo: abeloj kolektas polenon kaj nektaron
 en regulaj sesangulaj fakoj. Simile datumbazo ordigas
-kaj indeksas informerojn laŭ regulaj strukturoj. 
+kaj indeksas informerojn laŭ regulaj strukturoj.
+
+1. La tabeloj por redaktado (listo de redaktantoj, submetoj) troviĝas en sql/r2schema.sql
+
+2. La tabeloj kaj rigardoj por la serĉo kaj tezaŭro estas en sql/r3schema.sql
+
+![r3schema](dok/r3schema.png)
 
 ## Ekstrakti mankantajn tradukojn 
 
